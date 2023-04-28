@@ -2,33 +2,32 @@ import npyjs from 'https://cdn.jsdelivr.net/npm/npyjs@0.4.0/+esm'
 
 const n = new npyjs()
 
-const WIDTH = 28
-const HEIGHT = 28
-const SIZE = WIDTH * HEIGHT
-
 class ImageData {
-    constructor() {
+    constructor(width, height) {
+        this.width = width
+        this.height = height
+        this.size = width*height
         this.loaded = false
     }
 
-    async load() {
-        await n.load("images.npy", (array) => {
+    async load(path) {
+        await n.load(path, (array) => {
             this.data = array.data
+            this.loaded = true
         })
-        this.loaded = true
     }
 
     getCanvasImageData(x) {
         const canvas = document.createElement("canvas")
         const ctx = canvas.getContext("2d")
 
-        canvas.width = WIDTH
-        canvas.height = HEIGHT
-        const imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT)
+        canvas.width = this.width
+        canvas.height = this.height
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
         
-        for (let i = 0; i < SIZE; i++) {
+        for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < 3; j++) {
-                imageData.data[i*4 + j] = this.data[x*SIZE + i]
+                imageData.data[i*4 + j] = this.data[x*this.size + i]
             }
             imageData.data[i*4 + 3] = 255
         }
@@ -39,19 +38,21 @@ class ImageData {
 
 
 class LabelData {
-    constructor(inputElement) {
-        this.inputElement = inputElement
+    constructor() {
         this.loaded = false
-
-        this.inputElement.addEventListener("change", () => {
-            const file = this.inputElement.files[0]
-            file.arrayBuffer().then((array) => {
-                this.loaded = true
-                this.data = new Uint8Array(array)
-                console.log(this.data)
-            })
+    }
+    
+    load(path) {
+        const req = new XMLHttpRequest();
+        req.addEventListener("load", () => {
+            this.data = new Uint8Array(req.response)
+            console.log(this.data)
+            this.loaded = true
         })
-
+    
+        req.responseType = "arraybuffer"
+        req.open("GET", path)
+        req.send()
     }
 
     download() {

@@ -21,11 +21,11 @@ for (let i = 0; i < NUM_IMAGES; i++) {
 
 
 function download(content, fileName, contentType) {
-    var a = document.createElement("a");
-    var file = new Blob([content], {type: contentType});
-    a.href = URL.createObjectURL(file);
-    a.download = fileName;
-    a.click();
+    var a = document.createElement("a")
+    var file = new Blob([content], {type: contentType})
+    a.href = URL.createObjectURL(file)
+    a.download = fileName
+    a.click()
 }
 
 // download(arr, 'labels.bin', "");
@@ -34,17 +34,20 @@ function download(content, fileName, contentType) {
 canvas.width = WIDTH
 canvas.height = HEIGHT
 
-const images = new ImageData()
-const labels = new LabelData(document.getElementById("input"))
+const images = new ImageData(WIDTH, HEIGHT)
+images.load("images.npy").then(() => {
+    ctx.putImageData(images.getCanvasImageData(imageIndexInput.value), 0, 0)
+})
+
+const labels = new LabelData()
+labels.load("./labels.bin")
 
 downloadLabelsBtn.onclick = () => {
     labels.download()
 }
 
 
-images.load().then(() => {
-    ctx.putImageData(images.getCanvasImageData(imageIndexInput.value), 0, 0)
-})
+
 
 imageIndexInput.addEventListener("input", () => {
     if (images.loaded) {
@@ -66,8 +69,7 @@ document.addEventListener("keydown", (event) => {
             console.log(labels.data)
         }
         else {
-            alert("Labels has not been loaded. Please upload file")
+            alert("Labels are not done loading")
         }
     }
-    console.log()
 })
