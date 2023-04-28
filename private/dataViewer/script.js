@@ -1,28 +1,73 @@
-import npyjs from 'https://cdn.jsdelivr.net/npm/npyjs@0.4.0/+esm'
+import { ImageData, LabelData } from "./data.js"
 
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
 
+const imageIndexInput = document.getElementById("imageIndexInput")
+const imageIndexElement = document.getElementById("imageIndexElement")
+const downloadLabelsBtn = document.getElementById("downloadLabelsBtn")
+
 const WIDTH = 28
 const HEIGHT = 28
 const SIZE = WIDTH * HEIGHT
+const NUM_IMAGES = 81*124
+
+imageIndexInput.max = NUM_IMAGES - 1
+
+const arr = new Uint8Array(NUM_IMAGES, -1)
+for (let i = 0; i < NUM_IMAGES; i++) {
+    arr[i] = -1
+}
+
+
+function download(content, fileName, contentType) {
+    var a = document.createElement("a");
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+}
+
+// download(arr, 'labels.bin', "");
+
 
 canvas.width = WIDTH
 canvas.height = HEIGHT
 
-ctx.fillStyle = "green"
-ctx.fillRect(0, 0, canvas.width, canvas.height)
+const images = new ImageData()
+const labels = new LabelData(document.getElementById("input"))
 
-let n = new npyjs()
+downloadLabelsBtn.onclick = () => {
+    labels.download()
+}
 
-n.load("data.npy", (array) => {
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-    for (let i = 0; i < SIZE; i++) {
-        imageData.data[i*4] = array.data[i + SIZE*705]
-        imageData.data[i*4 + 1] = array.data[i + SIZE*705]
-        imageData.data[i*4 + 2] = array.data[i + SIZE*705]
-    }
-    ctx.putImageData(imageData, 0, 0)
+
+images.load().then(() => {
+    ctx.putImageData(images.getCanvasImageData(imageIndexInput.value), 0, 0)
 })
 
-console.log(n)
+imageIndexInput.addEventListener("input", () => {
+    if (images.loaded) {
+        ctx.putImageData(images.getCanvasImageData(imageIndexInput.value), 0, 0)
+    }
+    else {
+        alert("Images are not done loading")
+    }
+    imageIndexElement.innerText = imageIndexInput.value
+})
+
+
+document.addEventListener("keydown", (event) => {
+    if (!isNaN(event.key)) {
+        if (labels.loaded) {
+            labels.data[imageIndexInput.value] = event.key
+            imageIndexInput.value++
+            ctx.putImageData(images.getCanvasImageData(imageIndexInput.value), 0, 0)
+            console.log(labels.data)
+        }
+        else {
+            alert("Labels has not been loaded. Please upload file")
+        }
+    }
+    console.log()
+})

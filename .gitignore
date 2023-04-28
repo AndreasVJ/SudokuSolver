@@ -1,5 +1,7 @@
 private/dataConverter/cropped
 private/dataConverter/images
+images.npy
+labels.bin
 
 # Logs
 logs
