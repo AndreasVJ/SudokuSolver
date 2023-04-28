@@ -19,7 +19,7 @@ def getImageSection(img: Image.Image, x, y, x_sections, y_sections):
     return img.crop((x*section_width, y*section_height, x*section_width + section_width, y*section_width + section_height))
 
 
-directory = Path(__file__).parent / "./cropped images"
+directory = Path(__file__).parent / "./cropped"
 files = os.listdir(directory)
 
 converted_data = np.array([-1] * BOARD_SIZE * len(files), dtype=np.float32)
@@ -46,4 +46,4 @@ for i, file in enumerate(files):
                     converted_data[i * BOARD_SIZE + (y * X_SECTIONS + x) * SIZE + py*WIDTH + px] = np.mean(pixel_data[px, py])
 
 
-np.save(Path(__file__).parent.parent / "dataViewer/data", converted_data)
+np.save(Path(__file__).parent.parent / "dataViewer/images", converted_data)
