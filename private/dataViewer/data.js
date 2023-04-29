@@ -42,17 +42,11 @@ class LabelData {
         this.loaded = false
     }
     
-    load(path) {
-        const req = new XMLHttpRequest();
-        req.addEventListener("load", () => {
-            this.data = new Uint8Array(req.response)
-            console.log(this.data)
-            this.loaded = true
-        })
-    
-        req.responseType = "arraybuffer"
-        req.open("GET", path)
-        req.send()
+    async load(path) {
+        const response = await fetch(path)
+        const buffer = await response.arrayBuffer()
+        this.data = new Uint8Array(buffer)
+        this.loaded = true
     }
 
     download() {
