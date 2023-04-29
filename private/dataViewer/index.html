@@ -9,11 +9,47 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
+    <p id="imageLabelElement"></p>
     <div id="imageIndexContainer">
         <p id="imageIndexElement">0</p>
         <input type="range" id="imageIndexInput" value="0">
     </div>
     <button id="downloadLabelsBtn">Download Labels</button>
+    <button id="displayImagesBtn">Display Images</button>
+
+    <form id="labelCheckboxes">
+        <input type="checkbox" id="checkbox0" value="0">
+        <label for="checkbox0"> 0 </label>
+
+        <input type="checkbox" id="checkbox1" value="1">
+        <label for="checkbox1"> 1 </label><br>
+        
+        <input type="checkbox" id="checkbox2" value="2">
+        <label for="checkbox2"> 2 </label>
+        
+        <input type="checkbox" id="checkbox3" value="3">
+        <label for="checkbox3"> 3 </label><br>
+        
+        <input type="checkbox" id="checkbox4" value="4">
+        <label for="checkbox4"> 4 </label>
+        
+        <input type="checkbox" id="checkbox5" value="5">
+        <label for="checkbox5"> 5 </label><br>
+        
+        <input type="checkbox" id="checkbox6" value="6">
+        <label for="checkbox6"> 6 </label>
+        
+        <input type="checkbox" id="checkbox7" value="7">
+        <label for="checkbox7"> 7 </label><br>
+        
+        <input type="checkbox" id="checkbox8" value="8">
+        <label for="checkbox8"> 8 </label>
+        
+        <input type="checkbox" id="checkbox9" value="9">
+        <label for="checkbox9"> 9 </label>
+    </form>
+
+    <div id="imagesContainer"></div>
 
     <script src="./data.js" type="module"></script>
     <script src="./script.js" type="module"></script>
