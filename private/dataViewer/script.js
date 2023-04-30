@@ -1,4 +1,5 @@
-import { ImageData, LabelData } from "./data.js"
+import { ImageData, LabelData, ModelData } from "./data.js"
+import { getModel, train, showExamples, showAccuracy, showConfusion } from "./modelUtil.js"
 
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
@@ -10,6 +11,7 @@ const downloadLabelsBtn = document.getElementById("downloadLabelsBtn")
 const displayImagesBtn = document.getElementById("displayImagesBtn")
 const labelCheckboxes = document.getElementById("labelCheckboxes")
 const imagesContainer = document.getElementById("imagesContainer")
+const trainBtn = document.getElementById("trainBtn")
 
 
 const WIDTH = 28
@@ -94,4 +96,26 @@ displayImagesBtn.onclick = () => {
             imagesContainer.appendChild(newCanvas)
         }
     }
+}
+  
+async function run() {
+    const convertedLabels = new Uint8Array(labels.data.length * 10)
+
+    for (let i = 0; i < labels.data.length; i++) {
+        convertedLabels[i * 10 + labels.data[i]] = 1
+    }
+
+    const data = new ModelData(images.data, convertedLabels);
+    await showExamples(data);
+
+    const model = getModel();
+    
+    await train(model, data);
+    await showAccuracy(model, data);
+    await showConfusion(model, data);
+}
+  
+
+trainBtn.onclick = () => {
+    run()
 }
