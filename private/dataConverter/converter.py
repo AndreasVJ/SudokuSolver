@@ -43,7 +43,7 @@ for i, file in enumerate(files):
 
             for py in range(HEIGHT):
                 for px in range(WIDTH):
-                    converted_data[i * BOARD_SIZE + (y * X_SECTIONS + x) * SIZE + py*WIDTH + px] = np.mean(pixel_data[px, py])
+                    converted_data[i * BOARD_SIZE + (y * X_SECTIONS + x) * SIZE + py*WIDTH + px] = np.mean(pixel_data[px, py]) / 255
 
 
 np.save(Path(__file__).parent.parent / "dataViewer/images", converted_data)
