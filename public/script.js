@@ -26,18 +26,16 @@ for (let i = 0; i < 9; i++) {
 }
 document.body.appendChild(sudokuElement)
 
-console.log(sudokuElement.children)
-
 
 const image = new Image()
-image.src = "./images/sudoku.jpg"
+image.src = "./images/sudoku3.jpg"
 image.onload = () => {
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
 }
 
 
 const numberRecognizer = new Model
-numberRecognizer.load("https://sudokusolvertf.web.app/model/model.json")
+numberRecognizer.load("./model/model.json")
 
 
 predictBtn.onclick = () => {
@@ -58,7 +56,6 @@ predictBtn.onclick = () => {
         }
         for (const [index, value] of numberRecognizer.predict(predictionData, BATCH_SIZE).entries()) {
             grid[Math.floor(index / 9)][index%9] = value
-            // console.log(Math.floor(index / 9), index%9, value)
             sudokuElement.children[Math.floor(index / 9)].children[index%9].innerText = value
         }
         console.table(grid)

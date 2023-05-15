@@ -31,7 +31,7 @@ function convertImageData(imageData) {
         for (let j = 0; j < 3; j++) {
             sum += imageData.data[i*4 + j]
         }
-        imageArray[i] = 1 - sum/(255*3)
+        imageArray[i] = sum/(255*3)
     }
     
     return imageArray
