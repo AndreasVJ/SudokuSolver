@@ -28,7 +28,7 @@ document.body.appendChild(sudokuElement)
 
 
 const image = new Image()
-image.src = "./images/sudoku3.jpg"
+image.src = "./images/sudoku.jpg"
 image.onload = () => {
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
 }
