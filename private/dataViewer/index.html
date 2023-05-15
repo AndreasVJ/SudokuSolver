@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
     <!-- Import tfjs-vis -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
-    
+
 </head>
 <body>
     <canvas id="canvas"></canvas>
@@ -23,41 +23,14 @@
     <button id="downloadLabelsBtn">Download Labels</button>
     <button id="displayImagesBtn">Display Images</button>
 
-    <form id="labelCheckboxes">
-        <input type="checkbox" id="checkbox0" value="0">
-        <label for="checkbox0"> 0 </label>
+    <form id="displayedNumbersForm">
 
-        <input type="checkbox" id="checkbox1" value="1">
-        <label for="checkbox1"> 1 </label><br>
-        
-        <input type="checkbox" id="checkbox2" value="2">
-        <label for="checkbox2"> 2 </label>
-        
-        <input type="checkbox" id="checkbox3" value="3">
-        <label for="checkbox3"> 3 </label><br>
-        
-        <input type="checkbox" id="checkbox4" value="4">
-        <label for="checkbox4"> 4 </label>
-        
-        <input type="checkbox" id="checkbox5" value="5">
-        <label for="checkbox5"> 5 </label><br>
-        
-        <input type="checkbox" id="checkbox6" value="6">
-        <label for="checkbox6"> 6 </label>
-        
-        <input type="checkbox" id="checkbox7" value="7">
-        <label for="checkbox7"> 7 </label><br>
-        
-        <input type="checkbox" id="checkbox8" value="8">
-        <label for="checkbox8"> 8 </label>
-        
-        <input type="checkbox" id="checkbox9" value="9">
-        <label for="checkbox9"> 9 </label>
     </form>
 
     <div id="imagesContainer"></div>
 
     <button id="trainBtn">Train</button>
+    <button id="downloadModelBtn">Download Model</button>
 
     <script src="./data.js" type="module"></script>
     <script src="./script.js" type="module"></script>
