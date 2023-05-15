@@ -40,12 +40,17 @@ class ImageData {
 class LabelData {
     constructor() {
         this.loaded = false
+        this.count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
     
     async load(path) {
         const response = await fetch(path)
         const buffer = await response.arrayBuffer()
         this.data = new Uint8Array(buffer)
+        
+        for (const val of this.data) {
+            this.count[val]++
+        }
         this.loaded = true
     }
 
@@ -62,34 +67,33 @@ class LabelData {
 
 const IMAGE_SIZE = 784;
 const NUM_CLASSES = 10;
-const NUM_DATASET_ELEMENTS = 10000;
-
-const NUM_TRAIN_ELEMENTS = 9000;
-const NUM_TEST_ELEMENTS = NUM_DATASET_ELEMENTS - NUM_TRAIN_ELEMENTS;
 
 
 class ModelData {
 	constructor(datasetImages, datasetLabels) {
+        this.NUM_DATASET_ELEMENTS = datasetLabels.length / NUM_CLASSES
+        this.NUM_TRAIN_ELEMENTS = Math.floor(this.NUM_DATASET_ELEMENTS * 0.9)
+        this.NUM_TEST_ELEMENTS = this.NUM_DATASET_ELEMENTS - this.NUM_TRAIN_ELEMENTS
+        
+        this.datasetImages = datasetImages
+        this.datasetLabels = datasetLabels
+        
 		this.shuffledTrainIndex = 0;
 		this.shuffledTestIndex = 0;
 
-        this.datasetImages = datasetImages
-        this.datasetLabels = datasetLabels
-
-
         // Create shuffled indices into the train/test set for when we select a
         // random dataset element for training / validation.
-        this.trainIndices = tf.util.createShuffledIndices(NUM_TRAIN_ELEMENTS);
-        this.testIndices = tf.util.createShuffledIndices(NUM_TEST_ELEMENTS);
+        this.trainIndices = tf.util.createShuffledIndices(this.NUM_TRAIN_ELEMENTS);
+        this.testIndices = tf.util.createShuffledIndices(this.NUM_TEST_ELEMENTS);
     
         // Slice the the images and labels into train and test sets.
         this.trainImages =
-            this.datasetImages.slice(0, IMAGE_SIZE * NUM_TRAIN_ELEMENTS);
-        this.testImages = this.datasetImages.slice(IMAGE_SIZE * NUM_TRAIN_ELEMENTS);
+            this.datasetImages.slice(0, IMAGE_SIZE * this.NUM_TRAIN_ELEMENTS);
+        this.testImages = this.datasetImages.slice(IMAGE_SIZE * this.NUM_TRAIN_ELEMENTS);
         this.trainLabels =
-            this.datasetLabels.slice(0, NUM_CLASSES * NUM_TRAIN_ELEMENTS);
+            this.datasetLabels.slice(0, NUM_CLASSES * this.NUM_TRAIN_ELEMENTS);
         this.testLabels =
-            this.datasetLabels.slice(NUM_CLASSES * NUM_TRAIN_ELEMENTS);
+            this.datasetLabels.slice(NUM_CLASSES * this.NUM_TRAIN_ELEMENTS);
 	}
 
 
