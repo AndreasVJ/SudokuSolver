@@ -27,9 +27,6 @@ function solveSudoku(sudoku) {
                 for (let n = 1; n < 10; n++) {
                     if (possible(sudoku, x, y, n)) {
                         sudoku[y][x] = n
-                        if (y == 8 && x == 8) {
-                            return sudoku
-                        }
                         if (solveSudoku(sudoku)) {
                             return sudoku
                         }
@@ -40,7 +37,6 @@ function solveSudoku(sudoku) {
             }
         }
     }
-    
 
     return sudoku
 }
