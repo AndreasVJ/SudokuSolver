@@ -40,9 +40,22 @@ predictBtn.onclick = () => {
     
         const predictionData = tf.tensor2d(batchImagesArray, [BATCH_SIZE, IMAGE_WIDTH * IMAGE_HEIGHT]);
 
-        for (const [index, value] of numberRecognizer.predict(predictionData, BATCH_SIZE).entries()) {
-            sudokuElement.children[Math.floor(index / 9)].children[index%9].innerText = value
+        const predictions = numberRecognizer.predict(predictionData, BATCH_SIZE)
+
+        for (let i = 0; i < BATCH_SIZE; i++) {
+            let mostLikely = 0;
+            for (let j = 1; j < 10; j++) {
+                if (predictions[i*10 + j] > predictions[i*10 + mostLikely]) {
+                    mostLikely = j
+                }
+            }
+            sudokuElement.children[Math.floor(i / 9)].children[i%9].value = mostLikely
+            sudokuElement.children[Math.floor(i / 9)].children[i%9].style.backgroundColor = `rgb(255, ${255*predictions[i*10 + mostLikely]}, ${255*predictions[i*10 + mostLikely]})`
         }
+
+        // for (const [index, value] of numberRecognizer.predict(predictionData, BATCH_SIZE).entries()) {
+        //     sudokuElement.children[Math.floor(index / 9)].children[index%9].value = value
+        // }
     }
     else {
         alert("Model is still downloading")
@@ -55,7 +68,7 @@ solveBtn.onclick = () => {
     for (let y = 0; y < 9; y++) {
         sudoku.push([])
         for (let x = 0; x < 9; x++) {
-            sudoku[sudoku.length - 1].push(parseInt(sudokuElement.children[y].children[x].innerText))
+            sudoku[sudoku.length - 1].push(parseInt(sudokuElement.children[y].children[x].value))
         }
     }
 
@@ -63,7 +76,7 @@ solveBtn.onclick = () => {
 
     for (let y = 0; y < 9; y++) {
         for (let x = 0; x < 9; x++) {
-            sudokuElement.children[y].children[x].innerText = solved[y][x]
+            sudokuElement.children[y].children[x].value = solved[y][x]
         }
     }
 }

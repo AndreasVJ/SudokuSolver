@@ -18,12 +18,22 @@ body {
     flex-direction: row;
 }
 
-.sudokuRow p {
-    margin: 0;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    color: white;
-    line-height: 95%;
+.sudokuRow input {
+    height: 2rem;
+    width: 2rem;
+    text-align: center;
+    /* margin: 0; */
+    /* margin-left: 0.5rem;
+    margin-right: 0.5rem; */
+    /* color: white; */
+    /* line-height: 95%; */
+}
+
+/* Chrome, Safari, Edge, Opera */
+.sudokuRow input::-webkit-outer-spin-button,
+.sudokuRow input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 #solvedElement {

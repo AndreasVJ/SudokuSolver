@@ -12,7 +12,7 @@ export class Model {
         const IMAGE_WIDTH = 28
         const IMAGE_HEIGHT = 28
         const testxs = data.reshape([batchSize, IMAGE_WIDTH, IMAGE_HEIGHT, 1])
-        const prediction = this.model.predict(testxs).argMax(-1).dataSync()
+        const prediction = this.model.predict(testxs).dataSync()
         testxs.dispose();
         return prediction
     }
